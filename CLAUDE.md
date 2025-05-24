@@ -4,39 +4,54 @@
 This is a React Todo App built with Vite, TypeScript, and tested with Playwright.
 
 ## Available Commands
+**Note**: Bash commands are not available in Claude Code Actions. Use the available tools instead:
+
+- Read files to inspect code changes
+- Edit files to modify implementation
+- Glob/Grep to search for patterns
+- Use existing test files to verify functionality
+
+## Local Development Commands
+For local development, you can use:
 - `npm run dev` - Start development server
-- `npm run build` - Build for production
+- `npm run build` - Build for production  
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 - `npm run test:e2e` - Run Playwright E2E tests
 - `npm run test:e2e:ui` - Run Playwright tests with UI
 
-## UI Testing with Playwright
-The project includes Playwright for E2E testing. When running in Claude Code Actions:
+## UI Verification in Claude Code Actions
+Since bash commands are restricted, UI verification should be done through:
 
-1. The application is built and served on `http://localhost:4173`
-2. Playwright browsers are pre-installed and available
-3. You can use Playwright commands to interact with the UI:
-   - Take screenshots: `npx playwright screenshot`
-   - Run specific tests: `npx playwright test --grep "test-name"`
-   - Generate test reports: `npx playwright show-report`
+1. **Code Review**: Inspect CSS/HTML changes in components
+2. **Test Analysis**: Review existing test files for UI validation
+3. **Component Structure**: Analyze React component hierarchy and styling
 
-## UI Verification Commands
-For UI verification in Claude Code Actions, you can use:
+## Key Files for UI Verification
+- `src/App.tsx` - Main application component
+- `src/App.css` - Application styling and animations
+- `src/index.css` - Global styles
+- `tests/example.spec.ts` - E2E test for UI validation
 
+## Testing Approach
+To verify UI changes in Claude Code Actions:
+1. Review the modified CSS and component files
+2. Check that test files are updated accordingly
+3. Ensure responsive design considerations are maintained
+4. Validate accessibility and semantic HTML structure
+
+## Manual Testing Instructions
+For local UI verification after changes:
 ```bash
-# Take a screenshot of the homepage
-npx playwright screenshot --url http://localhost:4173 --path screenshot.png
+# Install dependencies
+npm install
 
-# Run UI tests and generate report
+# Start development server
+npm run dev
+
+# Or build and preview
+npm run build && npm run preview
+
+# Run E2E tests
 npm run test:e2e
-
-# Check if specific elements are visible
-npx playwright test --grep "homepage loads"
 ```
-
-## Environment
-- Node.js LTS
-- Playwright browsers installed with dependencies
-- Application served on port 4173 (preview mode)
-- Wait-on utility available for server readiness checks
