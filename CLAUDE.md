@@ -27,6 +27,19 @@ Since bash commands are restricted, UI verification should be done through:
 2. **Test Analysis**: Review existing test files for UI validation
 3. **Component Structure**: Analyze React component hierarchy and styling
 
+## Screenshot Functionality
+To request screenshots in issues or PRs:
+
+### Method 1: Use `/screenshot` command
+Comment `/screenshot` in any issue or PR to trigger automatic screenshot capture.
+
+### Method 2: Mention "スクリーンショット" or "screenshot"
+When mentioning "スクリーンショット" or "screenshot" in issue/PR comments with `@claude`, 
+screenshots will be automatically captured after Claude Code Actions completes.
+
+### Method 3: Manual trigger
+Use the "Simple Screenshot" workflow manually from the Actions tab.
+
 ## Key Files for UI Verification
 - `src/App.tsx` - Main application component
 - `src/App.css` - Application styling and animations

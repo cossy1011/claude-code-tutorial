@@ -34,4 +34,18 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          
+      # Claude Code完了後にスクリーンショット撮影をトリガー
+      - name: Trigger screenshot if requested
+        if: contains(github.event.comment.body, 'スクリーンショット') || contains(github.event.comment.body, 'screenshot') || contains(github.event.issue.body, 'スクリーンショット') || contains(github.event.issue.body, 'screenshot')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // screenshot-bot.ymlワークフローをトリガー
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'screenshot-bot.yml',
+              ref: 'main'
+            });
 

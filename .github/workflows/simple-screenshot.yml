@@ -1,0 +1,79 @@
+name: Simple Screenshot
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+jobs:
+  screenshot:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.comment.body, '/screenshot')
+    runs-on: ubuntu-latest
+    
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Start preview server
+        run: npm run preview &
+        
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:4173 --timeout 30000
+        
+      - name: Take screenshots
+        run: |
+          mkdir -p screenshots
+          npx playwright screenshot --url http://localhost:4173 --path screenshots/homepage.png
+          npx playwright screenshot --url http://localhost:4173 --path screenshots/mobile.png --viewport 375x667
+          
+      - name: Upload screenshots as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots-${{ github.run_number }}
+          path: screenshots/
+          retention-days: 7
+          
+      - name: Comment with artifact link
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runId = context.runId;
+            const comment = `## 📸 Screenshots Available
+            
+            スクリーンショットを撮影しました！以下のリンクからダウンロードできます：
+            
+            🔗 **[Download Screenshots](https://github.com/${{ github.repository }}/actions/runs/${runId})**
+            
+            含まれるファイル:
+            - \`homepage.png\` - デスクトップビュー
+            - \`mobile.png\` - モバイルビュー (375x667)
+            
+            *Artifactは7日間保存されます*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
