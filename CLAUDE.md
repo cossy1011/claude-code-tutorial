@@ -3,13 +3,35 @@
 ## Project Overview
 This is a React Todo App built with Vite, TypeScript, and tested with Playwright.
 
-## Available Commands
-**Note**: Bash commands are not available in Claude Code Actions. Use the available tools instead:
+## Available Tools in Claude Code Actions
+Claude has access to the following tools when running in GitHub Actions:
 
-- Read files to inspect code changes
-- Edit files to modify implementation
-- Glob/Grep to search for patterns
-- Use existing test files to verify functionality
+### File Operations
+- `View` - Read file contents
+- `Edit` - Modify files
+- `MultiEdit` - Edit multiple parts of a file
+- `Write` - Create new files
+- `GlobTool` - Find files by pattern
+- `GrepTool` - Search file contents
+
+### Build & Test Commands
+- `npm run build` - Build the application
+- `npm run preview &` - Start preview server in background
+- `npm run test:e2e` - Run Playwright E2E tests
+- `npm ci` - Install dependencies
+
+### Screenshot & UI Tools
+- `npx playwright screenshot --url http://localhost:4173 --path screenshot.png` - Take desktop screenshot
+- `npx playwright screenshot --url http://localhost:4173 --path mobile-screenshot.png --viewport 375x667` - Take mobile screenshot
+- `npx wait-on http://localhost:4173 --timeout 30000` - Wait for server to be ready
+- `pkill -f 'vite preview'` - Stop preview server
+- `ls -la *.png` - List screenshot files
+- `base64 -i screenshot.png` - Encode screenshots for display
+
+### Git Commands
+- `git status` - Check repository status
+- `git diff` - Show changes
+- `git log --oneline -5` - Show recent commits
 
 ## Local Development Commands
 For local development, you can use:
